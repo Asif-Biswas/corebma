@@ -1,0 +1,58 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+<!-- Page header start -->
+<div class="page-header">
+    
+    <!-- Breadcrumb start -->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Conversations</li>
+    </ol>
+    <!-- Breadcrumb end -->
+</div>
+<!-- Row start -->
+<div class="row gutters">
+    <div class="col-12">
+        <!-- Card start -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Users</div>
+            </div>
+            <div class="card-body">
+                <div class="customScroll5">
+                    {% if conversations %}
+                        <div class="browser-stats-container">
+                            {% for conversation in conversations %}
+                                <a href="{% url 'conversation' conversation.id %}" style="text-decoration: none;">
+                                    <div class="browser-stats mb-2 py-3 px-4 rounded" style="background-color: #1A233A;">
+                                        <div class="browser-icon d-flex">
+                                            <img style="width: 60px; height: 60px; border-radius: 50%;" src="{% static 'images/user.png' %} " alt="user">
+                                            <div class="ml-3">
+                                                <h4>
+                                                    {% if conversation.user_one == user %}
+                                                        {{ conversation.user_two.username }}
+                                                    {% else %}
+                                                        {{ conversation.user_one.username }}
+                                                    {% endif %}
+                                                <p>{{ conversation.get_last_message }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            {% endfor %}
+
+                        </div>
+                    {% else %}
+                        <div class="alert alert-danger" role="alert">
+                            No conversations found!
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <!-- Card end -->
+    </div>
+    
+    
+</div>
+{% endblock %}

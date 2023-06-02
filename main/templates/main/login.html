@@ -1,0 +1,90 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+	
+<!-- Mirrored from bootstrap.gallery/tycoon/design-dark-gradient-version/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 21 Nov 2021 11:41:10 GMT -->
+<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<!-- Meta -->
+		<meta name="description" content="Responsive Bootstrap4 Dashboard Template">
+		<meta name="author" content="ParkerThemes">
+		<link rel="shortcut icon" href="img/fav.png" />
+
+		<!-- Title -->
+		<title>Tycoon Admin Template - Login</title>
+		
+		<!-- *************
+			************ Common Css Files *************
+		************ -->
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+		<!-- Icomoon Font Icons css -->
+		<link rel="stylesheet" href="{% static 'fontsstyle.css' %}">
+		<!-- Main css -->
+		<link rel="stylesheet" href="{% static 'css/main.css' %}">
+		<!-- Chat css -->
+		<link rel="stylesheet" href="{% static 'css/chat.css' %}">
+
+	</head>
+
+	<body class="authentication">
+
+		<!-- Container start -->
+		<div class="container">
+			
+			<form action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+				<div class="row justify-content-md-center">
+					<div class="col-xl-4 col-lg-5 col-md-6 col-sm-12">
+						<div class="login-screen">
+							<div class="login-box">
+								<a href="#" class="login-logo">
+									<!-- <img src="img/logo.png" alt="Tycoon Admin Dashboard" /> -->
+									Tycoon
+								</a>
+								<h5>Welcome back,<br />Please Login to your Account.</h5>
+
+                                {% if messages %}
+									{% for message in messages %}
+										<div class="alert bg-danger alert-{{ message.tags }}">
+											{{ message }}
+										</div>
+									{% endfor %}
+								{% endif %}
+
+								<div class="form-group">
+									<input name="email" required type="text" class="form-control" placeholder="Email Address" />
+								</div>
+								<div class="form-group">
+									<input name="password" required type="password" class="form-control" placeholder="Password" />
+								</div>
+								<div class="actions mb-4">
+									<div class="custom-control custom-checkbox">
+										<input type="checkbox" class="custom-control-input" id="remember_pwd">
+										{% comment %} <label class="custom-control-label" for="remember_pwd">Remember me</label> {% endcomment %}
+									</div>
+									<button type="submit" class="btn btn-success">Login</button>
+								</div>
+								{% comment %} <div class="forgot-pwd">
+									<a class="link" href="forgot-pwd.html">Forgot password?</a>
+								</div> {% endcomment %}
+								<hr>
+								<div class="actions align-left">
+									<a href="{% url 'signup' %}" class="btn btn-info ml-0">Create an Account</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+
+		</div>
+		<!-- Container end -->
+
+	</body>
+
+<!-- Mirrored from bootstrap.gallery/tycoon/design-dark-gradient-version/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 21 Nov 2021 11:41:10 GMT -->
+</html>

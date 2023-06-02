@@ -1,0 +1,89 @@
+{% load static %}
+
+<nav id="sidebar" class="sidebar-wrapper">
+
+    <!-- Sidebar brand start  -->
+    <div class="sidebar-brand">
+        <a href="index.html" class="logo">Tycöòn</a>
+    </div>
+    <!-- Sidebar brand end  -->
+    
+    <!-- User profile start -->
+    <div class="sidebar-user-details">
+        <div class="user-profile">
+            <img width="64" height="64" src="{% static 'images/user.png' %}" alt="user" style="border-radius: 50%" />
+            <span class="status-label"></span>
+        </div>
+        <h6 class="profile-name">
+            {{ user.username }}
+        </h6>
+        <div class="profile-actions">
+            <a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="" data-original-title="Twitter">
+                <i class="fas fa-home"></i>
+            </a>
+            <a href="account-settings.html" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings">
+                <i class="far fa-comment-dots"></i>
+            </a>
+            <a href="{% url 'logout' %}" class="red" data-toggle="tooltip" data-placement="top" title="" data-original-title="Logout">
+                <i class="fas fa-sign-out-alt"></i>
+            </a>
+        </div>					
+    </div>
+    <!-- User profile end -->
+
+    <!-- Sidebar content start -->
+    <div class="sidebar-content">
+
+        <!-- sidebar menu start -->
+        <div class="sidebar-menu">
+            <ul>
+                <li class="sidebar-dropdown active">
+                    <a href="#">
+                        <i class="fas fa-home"></i>
+                        <span class="menu-text">Dashboards</span>
+                    </a>
+                    <div class="sidebar-submenu">
+                        <ul>
+                            <li>
+                                <a href="index.html" class="current-page">Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="dashboard2.html">Dashboard 2</a>
+                            </li>
+                            <li>
+                                <a href="dashboard3.html">Dashboard 3</a>
+                            </li>
+                            <li>
+                                <a href="dashboard4.html">Dashboard 4</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    {% if user.is_superuser %}
+                    <a href="{% url 'conversations' %}">
+                        <i class="far fa-comment-dots"></i>
+                        <span class="menu-text">Chat</span>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'conversation' %}">
+                        <i class="far fa-comment-dots"></i>
+                        <span class="menu-text">Chat</span>
+                    </a>
+                    {% endif %}
+                </li>
+                <li>
+                    <a href="graph-widgets.html" class="current-page">
+                        <i class="fas fa-tasks"></i>
+                        <span class="menu-text">Graph Widgets</span>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+        <!-- sidebar menu end -->
+
+    </div>
+    <!-- Sidebar content end -->
+    
+</nav>
