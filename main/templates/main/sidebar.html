@@ -19,7 +19,7 @@
         </h6>
         <div class="profile-actions">
             <a href="/" data-toggle="tooltip" data-placement="top" title="" data-original-title="Twitter">
-                <i class="fas fa-home"></i>
+                <i class="fas fa-tasks"></i>
             </a>
             {% if user.is_superuser %}
             <a href="{% url 'conversations' %}">
@@ -44,27 +44,8 @@
         <!-- sidebar menu start -->
         <div class="sidebar-menu">
             <ul>
-                <li class="sidebar-dropdown active">
-                    <a href="#">
-                        <i class="fas fa-home"></i>
-                        <span class="menu-text">Dashboards</span>
-                    </a>
-                    <div class="sidebar-submenu">
-                        <ul>
-                            <li>
-                                <a href="/" class="current-page">Dashboard</a>
-                            </li>
-                            {% comment %} <li>
-                                <a href="dashboard2.html">Dashboard 2</a>
-                            </li>
-                            <li>
-                                <a href="dashboard3.html">Dashboard 3</a>
-                            </li>
-                            <li>
-                                <a href="dashboard4.html">Dashboard 4</a>
-                            </li> {% endcomment %}
-                        </ul>
-                    </div>
+                <li>
+                    <a href="/" class="current-page"><i class="fas fa-tasks"></i>Task</a>
                 </li>
                 <li>
                     {% if user.is_superuser %}

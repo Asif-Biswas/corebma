@@ -38,8 +38,8 @@ def delete_todo(request, id):
 
 @login_required(login_url='login')
 def complete_todo(request, id):
-    if not request.user.is_superuser:
-        return redirect('home')
+    # if not request.user.is_superuser:
+    #     return redirect('home')
     todo = ToDoList.objects.get(id=id)
     todo.completed = True
     todo.save()
@@ -49,8 +49,8 @@ def complete_todo(request, id):
 
 @login_required(login_url='login')
 def incomplete_todo(request, id):
-    if not request.user.is_superuser:
-        return redirect('home')
+    # if not request.user.is_superuser:
+    #     return redirect('home')
     todo = ToDoList.objects.get(id=id)
     todo.completed = False
     todo.save()

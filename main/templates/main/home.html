@@ -74,13 +74,11 @@
                                     <span class="btn btn-danger btn-sm">Pending</span>
                                     {% endif %}
                                 </td>
-                                <td {% if user.is_superuser %} style="width: 250px;" {% else %} style="width: 150px;" {% endif %}>
-                                    {% if user.is_superuser %}
-                                        {% if todo.completed %}
-                                            <a href="{% url 'incomplete_todo' todo.id %}" class="btn btn-warning btn-sm">Incomplete</a>
-                                        {% else %}
-                                            <a href="{% url 'complete_todo' todo.id %}" class="btn btn-success btn-sm">Complete</a>
-                                        {% endif %}
+                                <td style="width: 250px;">
+                                    {% if todo.completed %}
+                                        <a href="{% url 'incomplete_todo' todo.id %}" class="btn btn-warning btn-sm">Incomplete</a>
+                                    {% else %}
+                                        <a href="{% url 'complete_todo' todo.id %}" class="btn btn-success btn-sm">Complete</a>
                                     {% endif %}
                                     <a href="{% url 'delete_todo' todo.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
                                 </td>
