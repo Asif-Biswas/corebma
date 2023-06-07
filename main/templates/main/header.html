@@ -28,11 +28,28 @@
                             <div class="header-user">
                                 <img src="{% static 'images/user.png' %}" alt="Admin Template">
                             </div>
-                            <h5>Yuki Hayashi</h5>
+                            <h5>
+                                {{ user.username }}
+                            </h5>
+                            {% if user.is_superuser %}
                             <p>Super User</p>
+                            {% else %}
+                            <p>User</p>
+                            {% endif %}
                         </div>
-                        <a href="user-profile.html"><i class="icon-user1"></i> My Profile</a>
-                        <a href="account-settings.html"><i class="icon-settings1"></i> Account Settings</a>
+                        <a href="/"><i class="fas fa-home"></i>Home</a>
+                        {% if user.is_superuser %}
+                            <a href="{% url 'conversations' %}">
+                                <i class="far fa-comment-dots"></i>
+                                <span class="menu-text">Chat</span>
+                            </a>
+                            {% else %}
+                            <a href="{% url 'conversation' %}">
+                                <i class="far fa-comment-dots"></i>
+                                <span class="menu-text">Chat</span>
+                            </a>
+                        {% endif %}
+                        
                         <a href="{% url 'logout' %}"><i class="icon-log-out1"></i> Sign Out</a>
                     </div>
                 </div>
