@@ -4,7 +4,9 @@
 
     <!-- Sidebar brand start  -->
     <div class="sidebar-brand">
-        <a href="index.html" class="logo">Tycöòn</a>
+        <a href="index.html" class="logo">
+            <img height="20px" src="{% static 'images/core.png' %}" alt="logo" />
+        </a>
     </div>
     <!-- Sidebar brand end  -->
     
@@ -45,7 +47,7 @@
         <div class="sidebar-menu">
             <ul>
                 <li>
-                    <a href="/" class="current-page"><i class="fas fa-tasks"></i>Task</a>
+                    <a href="/" class="current-page"><i class="fas fa-tasks"></i><span class="menu-text">Task</span></a>
                 </li>
                 <li>
                     {% if user.is_superuser %}
