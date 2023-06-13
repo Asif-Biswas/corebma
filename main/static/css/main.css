@@ -1464,7 +1464,7 @@ ul.header-notifications {
 
 .login-screen {
   position: relative;
-  background: #ffffff;
+  background: #1A233A;
   border: 0;
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
@@ -1472,7 +1472,7 @@ ul.header-notifications {
   margin: 60px auto;
   min-width: 320px;
   max-width: 320px;
-  color: #000000; }
+  color: #ffffff; }
   .login-screen .login-logo {
     margin: 1rem 0 2rem 0;
     display: inline-flex;
