@@ -197,7 +197,11 @@ jQuery(function ($) {
 			// unpin sidebar when hovered
 			$(".page-wrapper").removeClass("pinned");
 			$("#sidebar").unbind( "hover");
+			document.getElementById("large-logo").classList.remove('d-none')
+			document.getElementById("small-logo").classList.add('d-none')
 		} else {
+			document.getElementById("large-logo").classList.add('d-none')
+			document.getElementById("small-logo").classList.remove('d-none')
 			$(".page-wrapper").addClass("pinned");
 			$("#sidebar").hover(
 				function () {
