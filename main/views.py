@@ -5,6 +5,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import ToDoList, Message, Conversation
 from django.db.models import Q
+import json
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -80,13 +82,16 @@ def conversation(request, id=None):
 @login_required(login_url='login')
 def send_message(request, id):
     if request.method == 'POST':
-        text = request.POST.get('text')
+        data = json.loads(request.body.decode("utf-8"))
+        text = data['text']
         conversation = Conversation.objects.get(id=id)
         msg = Message.objects.create(
             sender=request.user, receiver=conversation.user_two, text=text)
         conversation.messages.add(msg)
         conversation.save()
-        return redirect('conversation', id=id)
+        return JsonResponse({'status': 'ok'})
+    return JsonResponse({'status': 'error'})
+    
     
 
 
