@@ -8,9 +8,9 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item">Conversation with 
 			{% if conversation.user_one == request.user %}
-				{{ conversation.user_two }}
+				{{ conversation.user_two.first_name }} {{ conversation.user_two.last_name }}
 			{% else %}
-				{{ conversation.user_one }}
+				{{ conversation.user_one.first_name }} {{ conversation.user_one.last_name }}
 			{% endif %}
 		</li>
     </ol>
@@ -70,7 +70,7 @@
 						
 					</ul>
 				</div>
-				<form class="card-footer" action="{% url 'send_message' conversation.id %}" method="POST">
+				<div class="card-footer">
 					{% csrf_token %}
 					<div class="input-group">
 						<input id="text" name="text" class="form-control" placeholder="Type your message here...">
@@ -78,7 +78,7 @@
 							<button onclick="sendMessage()" class="btn btn-primary" type="button">Send</button>
 						</span>
 					</div>
-				</form>
+				</div>
 			</div>
 		</div>
 	</div>

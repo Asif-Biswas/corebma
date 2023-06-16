@@ -28,7 +28,7 @@ body {
   position: relative;
   height: 100%; }
   body.authentication {
-    background-image: linear-gradient(to top, #0250c5 0%, #d43f8d 100%);
+    /* background-image: linear-gradient(to top, #0250c5 0%, #d43f8d 100%); */
     background-attachment: fixed; }
   body.error-screen {
     display: flex;
@@ -1177,7 +1177,8 @@ ul.header-notifications {
     overflow: hidden;
     display: block;
     white-space: nowrap;
-    text-overflow: ellipsis; }
+    /* text-overflow: ellipsis;  */
+  }
   .page-wrapper.pinned .sidebar-wrapper .sidebar-user-details .user-profile img.profile-thumb {
     width: 50px;
     height: 50px;
