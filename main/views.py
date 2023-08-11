@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .models import ToDoList, Message, Conversation
+from .models import ToDoList, Message, Conversation, UserProfile
 from django.db.models import Q
 import json
 from django.http import JsonResponse
@@ -93,9 +93,21 @@ def send_message(request, id):
     return JsonResponse({'status': 'error'})
     
     
+@login_required(login_url='login')
+def user_list(request):
+    if not request.user.is_superuser:
+        return redirect('home')
+    users = UserProfile.objects.all()
+    return render(request, 'main/user_list.html', {'users': users})
 
 
-
+@login_required(login_url='login')
+def delete_user_profile(request, id):
+    if not request.user.is_superuser:
+        return redirect('home')
+    user = UserProfile.objects.get(id=id)
+    user.delete()
+    return redirect('user_list')
 
 
 

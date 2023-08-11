@@ -17,4 +17,8 @@ urlpatterns = [
     path('conversation/', views.conversation, name='conversation'),
     path('conversation/<int:id>/', views.conversation, name='conversation'),
     path('send-message/<int:id>/', views.send_message, name='send_message'),
+
+    # user list
+    path('user-list/', views.user_list, name='user_list'),
+    path('delete-user-profile/<int:id>/', views.delete_user_profile, name='delete_user_profile'),
 ]

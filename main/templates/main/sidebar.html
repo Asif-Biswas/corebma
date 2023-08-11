@@ -4,7 +4,7 @@
 
     <!-- Sidebar brand start  -->
     <div class="sidebar-brand">
-        <a href="index.html" class="logo">
+        <a href="/" class="logo">
             <img id="large-logo" height="20px" src="{% static 'images/core.png' %}" alt="logo" />
             <img id="small-logo" class="d-none" height="36px" src="{% static 'images/8.png' %}" alt="logo" />
         </a>
@@ -63,12 +63,12 @@
                     </a>
                     {% endif %}
                 </li>
-                {% comment %} <li>
-                    <a href="graph-widgets.html" class="current-page">
+                <li>
+                    <a href="{% url 'user_list' %}" class="current-page">
                         <i class="fas fa-tasks"></i>
-                        <span class="menu-text">Graph Widgets</span>
+                        <span class="menu-text">User list</span>
                     </a>
-                </li> {% endcomment %}
+                </li>
                 
             </ul>
         </div>
