@@ -1,7 +1,7 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-	
+
 <!-- Mirrored from bootstrap.gallery/CORE/design-dark-gradient-version/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 21 Nov 2021 11:41:10 GMT -->
 <head>
 		<!-- Required meta tags -->
@@ -15,7 +15,7 @@
 
 		<!-- Title -->
 		<title>CORE Admin Template - Login</title>
-		
+
 		<!-- *************
 			************ Common Css Files *************
 		************ -->
@@ -34,7 +34,7 @@
 
 		<!-- Container start -->
 		<div class="container">
-			
+
 			<form action="{% url 'login' %}" method="post">
                 {% csrf_token %}
 				<div class="row justify-content-md-center">
@@ -45,7 +45,7 @@
 									<!-- <img src="img/logo.png" alt="CORE Admin Dashboard" /> -->
             						<img height="20px" src="{% static 'images/logo-blue.png' %}" alt="logo" />
 								</a>
-								<h5>Welcome back,<br />Please Login to your Account.</h5>
+								<h5 style="color: black;">Welcome back,<br />Please Login to your Account.</h5>
 
                                 {% if messages %}
 									{% for message in messages %}
@@ -70,7 +70,7 @@
 								</div>
 								<div class="forgot-pwd">
 									<a class="link" href="#">Forgot password?</a>
-								</div> 
+								</div>
 								<hr>
 								<div class="actions align-left">
 									<a href="{% url 'signup' %}" class="btn btn-info ml-0">Create an Account</a>
