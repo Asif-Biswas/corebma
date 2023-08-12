@@ -63,12 +63,14 @@
                     </a>
                     {% endif %}
                 </li>
+                {% if user.is_superuser %}
                 <li>
                     <a href="{% url 'user_list' %}" class="current-page">
                         <i class="fas fa-tasks"></i>
                         <span class="menu-text">User list</span>
                     </a>
                 </li>
+                {% endif %}
                 
             </ul>
         </div>

@@ -124,6 +124,9 @@ def signup_view(request):
         if User.objects.filter(email=email).exists():
             messages.error(request, 'Email already exists')
             return render(request, 'main/signup.html')
+        elif User.objects.filter(username=email).exists():
+            messages.error(request, 'Email already exists')
+            return render(request, 'main/signup.html')
         elif len(password1) < 6:
             messages.error(request, 'Password too short')
             return render(request, 'main/signup.html')
