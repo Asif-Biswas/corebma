@@ -46,10 +46,10 @@
                                     <img src="{% if user.profile_pic %}{{ user.profile_pic.url }}{% else %}{% static 'images/user.png' %}{% endif %}" alt="user" class="rounded-circle" width="40" height="40">
                                 </td>
                                 <td >
-                                    {{ user.user.username }}
+                                    {{ user.user.first_name }} {{ user.user.last_name }}
                                 </td>
                                 <td >
-                                    {{ user.user.first_name }} {{ user.user.last_name }}
+                                    {{ user.user.username }}
                                 </td>
                                 <td >
                                     <a href="{% url 'conversation' user.get_conversation_with_admin.id %}" class="btn btn-primary btn-sm">Chat</a>
