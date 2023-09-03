@@ -7,6 +7,11 @@ from .models import ToDoList, Message, Conversation, UserProfile
 from django.db.models import Q
 import json
 from django.http import JsonResponse
+from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from .serializers import UserSerializer, ToDoListSerializer, MessageSerializer, ConversationSerializer, UserProfileSerializer
 
 # Create your views here.
 
@@ -19,6 +24,15 @@ def home(request):
         todos = ToDoList.objects.filter(user=request.user)
     return render(request, 'main/home.html', {'todos': todos})
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def home_api(request):
+    if request.user.is_superuser:
+        todos = ToDoList.objects.all()
+    else:
+        todos = ToDoList.objects.filter(user=request.user)
+    serializer = ToDoListSerializer(todos, many=True)
+    return Response(serializer.data)
 
 @login_required(login_url='login')
 def add_todo(request):
@@ -29,6 +43,14 @@ def add_todo(request):
         # messages.success(request, 'Todo added successfully')
         return redirect('home')
     
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_todo_api(request):
+    data = json.loads(request.body)
+    todo = data['todo']
+    user = request.user
+    ToDoList.objects.create(user=user, todo=todo)
+    return Response({'status': 'ok'})
 
 @login_required(login_url='login')
 def delete_todo(request, id):
@@ -37,6 +59,12 @@ def delete_todo(request, id):
     # messages.success(request, 'Todo deleted successfully')
     return redirect('home')
 
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_todo_api(request, id):
+    todo = ToDoList.objects.get(id=id)
+    todo.delete()
+    return Response({'status': 'ok'})
 
 @login_required(login_url='login')
 def complete_todo(request, id):
@@ -48,6 +76,13 @@ def complete_todo(request, id):
     # messages.success(request, 'Todo completed successfully')
     return redirect('home')
 
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def complete_todo_api(request, id):
+    todo = ToDoList.objects.get(id=id)
+    todo.completed = True
+    todo.save()
+    return Response({'status': 'ok'})
 
 @login_required(login_url='login')
 def incomplete_todo(request, id):
@@ -59,12 +94,28 @@ def incomplete_todo(request, id):
     # messages.success(request, 'Todo incomplete successfully')
     return redirect('home')
 
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def incomplete_todo_api(request, id):
+    todo = ToDoList.objects.get(id=id)
+    todo.completed = False
+    todo.save()
+    return Response({'status': 'ok'})
+
 
 @login_required(login_url='login')
 def conversations(request):
     conversations = Conversation.objects.filter(
         Q(user_one=request.user) | Q(user_two=request.user)).order_by('-updated')
     return render(request, 'main/conversations.html', {'conversations': conversations})
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def conversations_api(request):
+    conversations = Conversation.objects.filter(
+        Q(user_one=request.user) | Q(user_two=request.user)).order_by('-updated')
+    serializer = ConversationSerializer(conversations, many=True)
+    return Response(serializer.data)
 
 
 @login_required(login_url='login')
@@ -77,6 +128,19 @@ def conversation(request, id=None):
             user_one=request.user, user_two=superuser)[0]
         
     return render(request, 'main/chat.html', {'conversation': conversation})
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def conversation_api(request, id=None):
+    if id:
+        conversation = Conversation.objects.get(id=id)
+    else:
+        superuser = User.objects.get(is_superuser=True)
+        conversation = Conversation.objects.get_or_create(
+            user_one=request.user, user_two=superuser)[0]
+    messages = conversation.messages.all()
+    serializer = MessageSerializer(messages, many=True)
+    return Response(serializer.data)
 
 
 @login_required(login_url='login')
@@ -92,6 +156,18 @@ def send_message(request, id):
         return JsonResponse({'status': 'ok'})
     return JsonResponse({'status': 'error'})
     
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def send_message_api(request, id):
+    data = json.loads(request.body)
+    text = data['text']
+    conversation = Conversation.objects.get(id=id)
+    msg = Message.objects.create(
+        sender=request.user, receiver=conversation.user_two, text=text)
+    conversation.messages.add(msg)
+    conversation.save()
+    return Response({'status': 'ok'})
+
     
 @login_required(login_url='login')
 def user_list(request):
@@ -99,6 +175,15 @@ def user_list(request):
         return redirect('home')
     users = UserProfile.objects.all()
     return render(request, 'main/user_list.html', {'users': users})
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_list_api(request):
+    if not request.user.is_superuser:
+        return Response({'status': 'error'})
+    users = UserProfile.objects.all()
+    serializer = UserProfileSerializer(users, many=True)
+    return Response(serializer.data)
 
 
 @login_required(login_url='login')
@@ -109,7 +194,24 @@ def delete_user_profile(request, id):
     user.delete()
     return redirect('user_list')
 
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_user_profile_api(request, id):
+    if not request.user.is_superuser:
+        return Response({'status': 'error'})
+    user = UserProfile.objects.get(id=id)
+    user.delete()
+    return Response({'status': 'ok'})
 
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_user_profile_api(request, id):
+    if not request.user.is_superuser:
+        return redirect('home')
+    user = UserProfile.objects.get(id=id)
+    user.delete()
+    return Response({'status': 'ok'})
 
 
 
@@ -141,6 +243,32 @@ def signup_view(request):
             return render(request, 'main/login.html')
     return render(request, 'main/signup.html')
 
+@api_view(['POST'])
+def signup_api(request):
+    data = json.loads(request.body)
+    firstname = data['firstname']
+    lastname = data['lastname']
+    email = data['email']
+    password1 = data['password1']
+    password2 = data['password2']
+
+    if User.objects.filter(email=email).exists():
+        return Response({'status': 'error', 'message': 'Email already exists'})
+    elif User.objects.filter(username=email).exists():
+        return Response({'status': 'error', 'message': 'Email already exists'})
+    elif len(password1) < 6:
+        return Response({'status': 'error', 'message': 'Password too short'})
+    elif password1 != password2:
+        return Response({'status': 'error', 'message': 'Passwords do not match'})
+    else:
+        user = User.objects.create_user(
+            first_name=firstname, last_name=lastname, email=email, username=email, password=password1)
+        user.save()
+
+        # login user
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({'status': 'ok', 'token': token.key})
+
 
 def login_view(request):
     if request.method == 'POST':
@@ -158,8 +286,29 @@ def login_view(request):
 
     return render(request, 'main/login.html')
 
+@api_view(['POST'])
+def login_api(request):
+    data = json.loads(request.body)
+    email = data['email']
+    password = data['password']
+
+    user = authenticate(request, username=email, password=password)
+    if user is not None:
+        login(request, user)
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({'status': 'ok', 'token': token.key})
+    else:
+        return Response({'status': 'error', 'message': 'Invalid credentials'})
+    
 
 def logout_view(request):
     logout(request)
     # messages.success(request, 'Logout successful')
     return redirect('login')
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def logout_api(request):
+    token = Token.objects.get(user=request.user)
+    token.delete()
+    return Response({'status': 'ok'})
