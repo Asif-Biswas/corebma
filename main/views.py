@@ -41,7 +41,7 @@ def add_todo(request):
         user = request.user
         ToDoList.objects.create(user=user, todo=todo)
         # messages.success(request, 'Todo added successfully')
-        return redirect('home')
+        return redirect('todo')
     
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -57,7 +57,7 @@ def delete_todo(request, id):
     todo = ToDoList.objects.get(id=id)
     todo.delete()
     # messages.success(request, 'Todo deleted successfully')
-    return redirect('home')
+    return redirect('todo')
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
@@ -74,7 +74,7 @@ def complete_todo(request, id):
     todo.completed = True
     todo.save()
     # messages.success(request, 'Todo completed successfully')
-    return redirect('home')
+    return redirect('todo')
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -92,7 +92,7 @@ def incomplete_todo(request, id):
     todo.completed = False
     todo.save()
     # messages.success(request, 'Todo incomplete successfully')
-    return redirect('home')
+    return redirect('todo')
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -312,3 +312,28 @@ def logout_api(request):
     token = Token.objects.get(user=request.user)
     token.delete()
     return Response({'status': 'ok'})
+
+
+def test(request):
+    todos = ToDoList.objects.all()
+    print(len(todos))
+    context = {
+        'todoPage': True,
+        'todos': todos,
+    }
+    return render(request, 'main/v_base.html', context)
+
+def todo(request):
+    todos = ToDoList.objects.all()
+    print(len(todos))
+    context = {
+        'todoPage': True,
+        'todos': todos,
+    }
+    return render(request, 'main/v-todo.html', context)
+
+def chat(request):
+    context = {
+        'chatPage': True,
+    }
+    return render(request, 'main/v-chat.html', context)

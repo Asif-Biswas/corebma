@@ -45,4 +45,7 @@ urlpatterns = [
     path('signup-api/', views.signup_api, name='signup_api'),
     path('logout-api/', views.logout_api, name='logout_api'),
     
+    path('test/', views.test, name='test'),
+    path('todo/', views.todo, name='todo'),
+    path('chat/', views.chat, name='chat')
 ]
