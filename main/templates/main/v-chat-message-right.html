@@ -1,0 +1,23 @@
+{% load static %}
+<li class="chat-message chat-message-right">
+    <div class="d-flex overflow-hidden">
+    <div class="chat-message-wrapper flex-grow-1">
+        <div class="chat-message-text">
+        <p class="mb-0">
+            {{message.text}}
+        </p>
+        </div>
+        <div class="text-end text-muted mt-1">
+        <i class="ti ti-checks ti-xs text-success"></i>
+        <small>
+            {{ message.date|date:"d M Y H:i" }}
+        </small>
+        </div>
+    </div>
+    <div class="user-avatar flex-shrink-0 ms-3">
+        <div class="avatar avatar-sm">
+        <img src="{% if message.sender.userprofile.profile_pic %} {{message.sender.userprofile.profile_pic.url}} {% else %} {% static 'images/user.png' %} {% endif %}" alt="Avatar" class="rounded-circle" />
+        </div>
+    </div>
+    </div>
+</li>

@@ -51,6 +51,13 @@ class Conversation(models.Model):
             return self.messages.all().order_by('date').last()
         return None
     
+    def get_last_message_time(self):
+        last_message = self.get_last_message()
+        if last_message:
+            return last_message.date
+        return None
+    
+    
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

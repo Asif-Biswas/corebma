@@ -107,7 +107,7 @@ def incomplete_todo_api(request, id):
 def conversations(request):
     conversations = Conversation.objects.filter(
         Q(user_one=request.user) | Q(user_two=request.user)).order_by('-updated')
-    return render(request, 'main/conversations.html', {'conversations': conversations})
+    return render(request, 'main/v-chat.html', {'conversations': conversations})
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -127,7 +127,7 @@ def conversation(request, id=None):
         conversation = Conversation.objects.get_or_create(
             user_one=request.user, user_two=superuser)[0]
         
-    return render(request, 'main/chat.html', {'conversation': conversation})
+    return render(request, 'main/v-conversation.html', {'history': conversation})
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -146,15 +146,13 @@ def conversation_api(request, id=None):
 @login_required(login_url='login')
 def send_message(request, id):
     if request.method == 'POST':
-        data = json.loads(request.body.decode("utf-8"))
-        text = data['text']
+        text = request.POST.get('text')
         conversation = Conversation.objects.get(id=id)
         msg = Message.objects.create(
             sender=request.user, receiver=conversation.user_two, text=text)
         conversation.messages.add(msg)
         conversation.save()
-        return JsonResponse({'status': 'ok'})
-    return JsonResponse({'status': 'error'})
+        return render(request, 'main/v-chat-message-right.html', {'message': msg})
     
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -171,10 +169,8 @@ def send_message_api(request, id):
     
 @login_required(login_url='login')
 def user_list(request):
-    if not request.user.is_superuser:
-        return redirect('home')
     users = UserProfile.objects.all()
-    return render(request, 'main/user_list.html', {'users': users})
+    return render(request, 'main/v-users.html', {'users': users})
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -214,6 +210,20 @@ def delete_user_profile_api(request, id):
     return Response({'status': 'ok'})
 
 
+def direct_chat(request, id):
+    conversations = Conversation.objects.filter(
+        Q(user_one=request.user) | Q(user_two=request.user)).order_by('-updated')
+    userProfile, _ = UserProfile.objects.get_or_create(user=request.user)
+    conversation = Conversation.objects.get(id=id)
+    context = {
+        'chatPage': True,
+        'conversations': conversations,
+        'userProfile': userProfile,
+        'history': conversation,
+    }
+    return render(request, 'main/v-chat.html', context)
+
+
 
 def signup_view(request):
     if request.method == 'POST':
@@ -225,23 +235,23 @@ def signup_view(request):
 
         if User.objects.filter(email=email).exists():
             messages.error(request, 'Email already exists')
-            return render(request, 'main/signup.html')
+            return render(request, 'main/auth-register-cover.html')
         elif User.objects.filter(username=email).exists():
             messages.error(request, 'Email already exists')
-            return render(request, 'main/signup.html')
+            return render(request, 'main/auth-register-cover.html')
         elif len(password1) < 6:
             messages.error(request, 'Password too short')
-            return render(request, 'main/signup.html')
+            return render(request, 'main/auth-register-cover.html')
         elif password1 != password2:
             messages.error(request, 'Passwords do not match')
-            return render(request, 'main/signup.html')
+            return render(request, 'main/auth-register-cover.html')
         else:
             user = User.objects.create_user(
                 first_name=firstname, last_name=lastname, email=email, username=email, password=password1)
             user.save()
             messages.success(request, 'Account created successfully')
-            return render(request, 'main/login.html')
-    return render(request, 'main/signup.html')
+            return render(request, 'main/auth-login-cover.html')
+    return render(request, 'main/auth-register-cover.html')
 
 @api_view(['POST'])
 def signup_api(request):
@@ -279,12 +289,12 @@ def login_view(request):
         if user is not None:
             login(request, user)
             # messages.success(request, 'Login successful')
-            return redirect('home')
+            return redirect('test')
         else:
             messages.error(request, 'Invalid credentials')
-            return render(request, 'main/login.html')
+            return render(request, 'main/auth-login-cover.html')
 
-    return render(request, 'main/login.html')
+    return render(request, 'main/auth-login-cover.html')
 
 @api_view(['POST'])
 def login_api(request):
@@ -316,7 +326,6 @@ def logout_api(request):
 
 def test(request):
     todos = ToDoList.objects.all()
-    print(len(todos))
     context = {
         'todoPage': True,
         'todos': todos,
@@ -333,7 +342,12 @@ def todo(request):
     return render(request, 'main/v-todo.html', context)
 
 def chat(request):
+    conversations = Conversation.objects.filter(
+        Q(user_one=request.user) | Q(user_two=request.user)).order_by('-updated')
+    userProfile, _ = UserProfile.objects.get_or_create(user=request.user)
     context = {
         'chatPage': True,
+        'conversations': conversations,
+        'userProfile': userProfile,
     }
     return render(request, 'main/v-chat.html', context)

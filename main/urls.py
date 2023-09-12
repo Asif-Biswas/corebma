@@ -17,6 +17,7 @@ urlpatterns = [
     path('conversation/', views.conversation, name='conversation'),
     path('conversation/<int:id>/', views.conversation, name='conversation'),
     path('send-message/<int:id>/', views.send_message, name='send_message'),
+    path('direct-chat/<int:id>/', views.direct_chat, name='direct_chat'),
 
     # user list
     path('user-list/', views.user_list, name='user_list'),
@@ -45,7 +46,7 @@ urlpatterns = [
     path('signup-api/', views.signup_api, name='signup_api'),
     path('logout-api/', views.logout_api, name='logout_api'),
     
-    path('test/', views.test, name='test'),
+    path('app/', views.test, name='test'),
     path('todo/', views.todo, name='todo'),
     path('chat/', views.chat, name='chat')
 ]

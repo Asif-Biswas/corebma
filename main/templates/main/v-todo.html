@@ -58,7 +58,7 @@
                         {% else %}
                             <span hx-get="{% url 'complete_todo' todo.id %}" class="dropdown-item" hx-target="#body-wrapper" hx-swap="innerHTML">Complete</span>
                         {% endif %}
-                        <span hx-get="{% url 'delete_todo' todo.id %}" class="dropdown-item" onclick="return confirm('Are you sure?')" hx-target="#body-wrapper" hx-swap="innerHTML">Delete</span>
+                        <span hx-get="{% url 'delete_todo' todo.id %}" class="dropdown-item" onclick="return confirm('Are you sure?')" style="cursor: pointer" hx-target="#body-wrapper" hx-swap="innerHTML">Delete</span>
                         </div>
                     </div>
                     </td>
