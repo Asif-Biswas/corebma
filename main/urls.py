@@ -46,7 +46,7 @@ urlpatterns = [
     path('signup-api/', views.signup_api, name='signup_api'),
     path('logout-api/', views.logout_api, name='logout_api'),
     
-    path('app/', views.test, name='test'),
+    path('app/', views.home, name='test'),
     path('todo/', views.todo, name='todo'),
     path('chat/', views.chat, name='chat')
 ]

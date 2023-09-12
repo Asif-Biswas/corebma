@@ -31,12 +31,14 @@
           <div >Chat</div>
         </a>
       </li>
+      {% if request.user.is_superuser %}
       <li class="menu-item" hx-get="{% url 'user_list' %}" hx-target="#body-wrapper" hx-swap="innerHTML">
         <a href="#" class="menu-link">
           <i class="menu-icon tf-icons ti ti-users"></i>
           <div >Users</div>
         </a>
       </li>
+      {% endif %}
       
     </ul>
   </aside>

@@ -16,13 +16,13 @@ from .serializers import UserSerializer, ToDoListSerializer, MessageSerializer, 
 # Create your views here.
 
 
-@login_required(login_url='login')
-def home(request):
-    if request.user.is_superuser:
-        todos = ToDoList.objects.all()
-    else:
-        todos = ToDoList.objects.filter(user=request.user)
-    return render(request, 'main/home.html', {'todos': todos})
+# @login_required(login_url='login')
+# def home(request):
+#     if request.user.is_superuser:
+#         todos = ToDoList.objects.all()
+#     else:
+#         todos = ToDoList.objects.filter(user=request.user)
+#     return render(request, 'main/home.html', {'todos': todos})
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -289,7 +289,7 @@ def login_view(request):
         if user is not None:
             login(request, user)
             # messages.success(request, 'Login successful')
-            return redirect('test')
+            return redirect('home')
         else:
             messages.error(request, 'Invalid credentials')
             return render(request, 'main/auth-login-cover.html')
@@ -324,8 +324,12 @@ def logout_api(request):
     return Response({'status': 'ok'})
 
 
-def test(request):
-    todos = ToDoList.objects.all()
+@login_required(login_url='login')
+def home(request):
+    if request.user.is_superuser:
+        todos = ToDoList.objects.all()
+    else:
+        todos = ToDoList.objects.filter(user=request.user)
     context = {
         'todoPage': True,
         'todos': todos,
@@ -333,8 +337,10 @@ def test(request):
     return render(request, 'main/v_base.html', context)
 
 def todo(request):
-    todos = ToDoList.objects.all()
-    print(len(todos))
+    if request.user.is_superuser:
+        todos = ToDoList.objects.all()
+    else:
+        todos = ToDoList.objects.filter(user=request.user)
     context = {
         'todoPage': True,
         'todos': todos,
@@ -344,10 +350,18 @@ def todo(request):
 def chat(request):
     conversations = Conversation.objects.filter(
         Q(user_one=request.user) | Q(user_two=request.user)).order_by('-updated')
+    if not conversations:
+        superuser = User.objects.get(is_superuser=True)
+        conversation = Conversation.objects.get_or_create(
+            user_one=request.user, user_two=superuser)[0]
+        conversations = Conversation.objects.filter(
+            Q(user_one=request.user) | Q(user_two=request.user)).order_by('-updated')
     userProfile, _ = UserProfile.objects.get_or_create(user=request.user)
+    history = conversations[0]
     context = {
         'chatPage': True,
         'conversations': conversations,
         'userProfile': userProfile,
+        'history': history,
     }
     return render(request, 'main/v-chat.html', context)
