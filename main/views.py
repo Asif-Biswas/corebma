@@ -12,7 +12,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from .serializers import UserSerializer, ToDoListSerializer, MessageSerializer, ConversationSerializer, UserProfileSerializer
-
+import random
 # Create your views here.
 
 
@@ -118,7 +118,7 @@ def conversations_api(request):
     return Response(serializer.data)
 
 
-@login_required(login_url='login')
+
 def conversation(request, id=None):
     if id:
         conversation = Conversation.objects.get(id=id)
@@ -143,13 +143,17 @@ def conversation_api(request, id=None):
     return Response(serializer.data)
 
 
-@login_required(login_url='login')
+
 def send_message(request, id):
     if request.method == 'POST':
         text = request.POST.get('text')
         conversation = Conversation.objects.get(id=id)
+        if 'user' in request.session:
+            user = User.objects.get(id=request.session['user'])
+        else:
+            user = request.user
         msg = Message.objects.create(
-            sender=request.user, receiver=conversation.user_two, text=text)
+            sender=user, receiver=conversation.user_two, text=text)
         conversation.messages.add(msg)
         conversation.save()
         return render(request, 'main/v-chat-message-right.html', {'message': msg})
@@ -288,7 +292,10 @@ def login_view(request):
         user = authenticate(request, username=email, password=password)
         if user is not None:
             login(request, user)
-            # messages.success(request, 'Login successful')
+            # remove session
+            if 'user' in request.session:
+                del request.session['user']
+
             return redirect('home')
         else:
             messages.error(request, 'Invalid credentials')
@@ -365,3 +372,43 @@ def chat(request):
         'history': history,
     }
     return render(request, 'main/v-chat.html', context)
+
+
+def chat_with_admin(request):
+    # if user is logged in, redirect to chat page
+    if request.user.is_authenticated:
+        return redirect('chat')
+    
+    superuser = User.objects.get(is_superuser=True)
+    # check session for user
+    if 'user' in request.session:
+        user = User.objects.get(id=request.session['user'])
+    else:
+        # if user is not logged in, create a new user & conversation with admin
+        # generate random username
+        username = 'user' + str(random.randint(1, 100000))
+        while User.objects.filter(username=username).exists():
+            username = 'user' + str(random.randint(1, 100000))
+        # create user
+        user = User.objects.create_user(username=username, password='password')
+        user.first_name = 'Guest'
+        user.last_name = 'User'
+        user.save()
+        # save user in session
+        request.session['user'] = user.id
+
+    # create conversation
+    conversation = Conversation.objects.get_or_create(
+        user_one=user, user_two=superuser)[0]
+    userProfile, _ = UserProfile.objects.get_or_create(user=user)
+    context = {
+        'chatPage': True,
+        'userProfile': userProfile,
+        'history': conversation,
+        'conversation': conversation,
+        'myuser': user,
+    }
+
+    return render(request, 'main/chat-with-admin.html', context)
+    
+    
