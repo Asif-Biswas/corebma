@@ -101,7 +101,7 @@
                 required
               />
             </div>
-            <button type="submit" class="mt-2 btn active btn-primary float-end btn-block">Add Todo</button>
+            <button onclick="hideShadow()" type="submit" class="mt-2 btn active btn-primary float-end btn-block">Add Todo</button>
           </form>
 
         </div>
@@ -111,9 +111,7 @@
 
 <script>
     // when the form is submited, remove the element with class 'modal-backdrop'
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelector('#add-todo-form').addEventListener('submit', function() {
-            document.querySelector('.modal-backdrop').remove();
-        });
-    });
+    function hideShadow() {
+        document.querySelector('.modal-backdrop').remove();
+    }
 </script>

@@ -63,7 +63,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Scroll to bottom function
     function scrollToBottom() {
-      chatHistoryBody.scrollTo(0, chatHistoryBody.scrollHeight);
+      try {
+        chatHistoryBody.scrollTo(0, chatHistoryBody.scrollHeight);
+      } catch (error) {
+        
+      }
     }
     scrollToBottom();
 
@@ -156,26 +160,30 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Send Message
-    formSendMessage.addEventListener('submit', e => {
-      e.preventDefault();
-      if (messageInput.value) {
-        // Create a div and add a class
-        let renderMsg = document.createElement('div');
-        renderMsg.className = 'chat-message-text mt-2';
-        renderMsg.innerHTML = '<p class="mb-0 text-break">' + messageInput.value + '</p>';
-        document.querySelector('li:last-child .chat-message-wrapper').appendChild(renderMsg);
-        messageInput.value = '';
-        scrollToBottom();
-      }
-    });
+    if (formSendMessage){
+      formSendMessage.addEventListener('submit', e => {
+        e.preventDefault();
+        if (messageInput.value) {
+          // Create a div and add a class
+          let renderMsg = document.createElement('div');
+          renderMsg.className = 'chat-message-text mt-2';
+          renderMsg.innerHTML = '<p class="mb-0 text-break">' + messageInput.value + '</p>';
+          document.querySelector('li:last-child .chat-message-wrapper').appendChild(renderMsg);
+          messageInput.value = '';
+          scrollToBottom();
+        }
+      });
+    }
+    
 
     // on click of chatHistoryHeaderMenu, Remove data-overlay attribute from chatSidebarLeftClose to resolve overlay overlapping issue for two sidebar
     let chatHistoryHeaderMenu = document.querySelector(".chat-history-header [data-target='#app-chat-contacts']"),
       chatSidebarLeftClose = document.querySelector('.app-chat-sidebar-left .close-sidebar');
-    chatHistoryHeaderMenu.addEventListener('click', e => {
+    if (chatHistoryHeaderMenu && chatSidebarLeftClose) {
+      chatHistoryHeaderMenu.addEventListener('click', e => {
       chatSidebarLeftClose.removeAttribute('data-overlay');
     });
-    // }
+    }
 
     // Speech To Text
     if (speechToText.length) {
