@@ -294,7 +294,17 @@ def login_view(request):
             login(request, user)
             # remove session
             if 'user' in request.session:
+                # all_messages = Message.objects.filter(
+                #     Q(sender=request.user) | Q(receiver=request.user))
+                # for msg in all_messages:
+                #     if msg.sender == user:
+                #         msg.sender = None
+                #         msg.save()
+                #     if msg.receiver == user:
+                #         msg.receiver = None
+                #         msg.save()
                 del request.session['user']
+
 
             return redirect('home')
         else:
