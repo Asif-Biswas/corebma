@@ -21859,3 +21859,8 @@ a.bg-vimeo:hover, a.bg-vimeo:focus {
   max-height: 99vh;
   overflow-y: scroll;
 }
+
+.my-bg-color{
+  background-color: white;
+  color: #6f6b7d;
+}

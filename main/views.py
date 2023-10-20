@@ -422,3 +422,9 @@ def chat_with_admin(request):
     return render(request, 'main/chat-with-admin.html', context)
     
     
+def change_theme(request, theme):
+    if theme == 'dark':
+        request.session['theme'] = 'dark'
+    else:
+        request.session['theme'] = 'light'
+    return redirect(request.META.get('HTTP_REFERER', '/'))

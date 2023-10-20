@@ -21807,3 +21807,8 @@ a.bg-vimeo:hover, a.bg-vimeo:focus {
 .footer.bg-lighter hr {
   border-color: rgba(207, 211, 236, 0.15);
 }
+
+.my-bg-color{
+  background-color: #2f3349;
+  color: #fff;
+}

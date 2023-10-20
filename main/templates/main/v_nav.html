@@ -20,6 +20,27 @@
               <!-- /Search -->
 
               <ul class="navbar-nav flex-row align-items-center ms-auto">
+                <li class="nav-item dropdown-style-switcher dropdown me-2 me-xl-0">
+                  <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    {% if request.session.theme == 'light' %}
+                      <i class="ti ti-md ti-moon"></i>
+                    {% else %}
+                      <i class="ti ti-md ti-sun"></i>
+                    {% endif %}
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-styles">
+                    <li>
+                      <a class="dropdown-item" href="{% url "change_theme" 'light' %}" data-theme="light">
+                        <span class="align-middle"><i class="ti ti-sun me-2"></i>Light</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{% url "change_theme" 'dark' %}" data-theme="dark">
+                        <span class="align-middle"><i class="ti ti-moon me-2"></i>Dark</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
                 <!-- User -->
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                   <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">

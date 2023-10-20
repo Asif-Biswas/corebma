@@ -56,7 +56,7 @@
                     <div class="d-flex overflow-hidden">
                     <div class="chat-message-wrapper flex-grow-1">
                         <div class="chat-message-text">
-                        <p class="mb-0">
+                        <p class="mb-0 my-text-color">
                             {{message.text}}
                         </p>
                         </div>
@@ -82,7 +82,7 @@
                       </div>
                     </div>
                     <div class="chat-message-wrapper flex-grow-1">
-                      <div class="chat-message-text" style="background-color:#2f3349;">
+                      <div class="chat-message-text shadow-sm my-bg-color">
                         <p class="mb-0">
                             {{message.text}}
                         </p>
@@ -100,7 +100,7 @@
         </ul>
       </div>
       <!-- Chat message form -->
-      <div class="chat-history-footer shadow-sm" style="background-color: #2f3349;">
+      <div class="chat-history-footer shadow-sm  my-bg-color">
         <form hx-post="{% url 'send_message' history.id %}" 
             hx-target="#history-chat-list"
             hx-swap="beforeend"
