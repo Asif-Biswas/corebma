@@ -18,6 +18,12 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+# custom error pages
+handler404 = 'main.views.error_view'
+handler500 = 'main.views.error_view'
+handler403 = 'main.views.error_view'
+handler400 = 'main.views.error_view'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include ('main.urls')),

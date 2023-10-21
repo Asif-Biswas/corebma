@@ -64,9 +64,12 @@
       <!-- Layout container -->
       <div class="layout-page" style="width: 100%; max-width: 1000px; margin: auto">
         
-        <div class="container mt-4">
+        <div class="container mt-4 d-flex justify-content-between">
+            <a href="{% url 'home' %}" >
+                <button class="btn btn-primary active"><i class="fas fa-external-link-alt me-2"></i> Visit Our Website</button>
+            </a>
             <a href="{% url 'login' %}" >
-                <button class="btn btn-primary active">Login</button>
+                <button class="btn btn-primary active"><i class="fas fa-sign-in-alt me-2"></i> Login</button>
             </a>
         </div>
 

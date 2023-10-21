@@ -410,6 +410,12 @@ def chat_with_admin(request):
     # create conversation
     conversation = Conversation.objects.get_or_create(
         user_one=user, user_two=superuser)[0]
+    # send a message from admin "Hi, how can I help you?" if no message exists
+    if not conversation.messages.all():
+        msg = Message.objects.create(
+            sender=superuser, receiver=user, text="Hi, how can I help you?")
+        conversation.messages.add(msg)
+    # get user profile
     userProfile, _ = UserProfile.objects.get_or_create(user=user)
     context = {
         'chatPage': True,
@@ -428,3 +434,7 @@ def change_theme(request, theme):
     else:
         request.session['theme'] = 'light'
     return redirect(request.META.get('HTTP_REFERER', '/'))
+
+
+def error_view(request, exception=None):
+    return render(request, 'main/404.html')
