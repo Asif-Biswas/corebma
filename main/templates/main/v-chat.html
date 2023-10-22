@@ -174,14 +174,14 @@
                   <a class="d-flex align-items-center">
                     <div class="flex-shrink-0 avatar avatar-online">
                       {% if not conversation.user_one == request.user %}
-                        <img src="{% if conversation.user_one.userprofile.progile_pic %}
-                          {{conversation.user_one.userprofile.progile_pic.url}}
+                        <img src="{% if conversation.user_one.userprofile.profile_pic %}
+                          {{conversation.user_one.userprofile.profile_pic.url}}
                         {% else %}
                           {% static 'images/user.png' %}
                         {% endif %}" alt="Avatar" class="rounded-circle" />
                       {% else %}
-                        <img src="{% if conversation.user_two.userprofile.progile_pic %}
-                          {{conversation.user_two.userprofile.progile_pic.url}}
+                        <img src="{% if conversation.user_two.userprofile.profile_pic %}
+                          {{conversation.user_two.userprofile.profile_pic.url}}
                         {% else %}
                           {% static 'images/user.png' %}
                         {% endif %}" alt="Avatar" class="rounded-circle" />

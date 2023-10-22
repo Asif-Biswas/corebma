@@ -13,7 +13,7 @@
                 <div class="nav-item navbar-search-wrapper mb-0">
                   <a class="nav-item nav-link search-toggler d-flex align-items-center px-0" href="javascript:void(0);">
                     <i class="ti ti-search ti-md me-2"></i>
-                    <span class="d-none d-md-inline-block text-muted">Search (Ctrl+/)</span>
+                    <span class="d-none d-md-inline-block text-muted">Search </span>
                   </a>
                 </div>
               </div>
@@ -46,7 +46,7 @@
                   <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                     <div class="avatar avatar-online">
                       {% if request.user.userprofile.profile_pic %}
-                      <img src="{{ request.user.userprofile.profile_pic.url }}" class="h-auto rounded-circle" />
+                      <img src="{{ request.user.userprofile.profile_pic.url }}" class="rounded-circle" style="height: 40px; width: 40px" />
                       {% else %}
                       <img src="/static/images/user.png" class="h-auto rounded-circle" />
                       {% endif %}
@@ -59,7 +59,7 @@
                           <div class="flex-shrink-0 me-3">
                             <div class="avatar avatar-online">
                                 {% if request.user.userprofile.profile_pic %}
-                                <img src="{{ request.user.userprofile.profile_pic.url }}" class="h-auto rounded-circle" />
+                                <img src="{{ request.user.userprofile.profile_pic.url }}" class="rounded-circle" style="height: 40px; width: 40px" />
                                 {% else %}
                                 <img src="/static/images/user.png" class="h-auto rounded-circle" />
                                 {% endif %}
@@ -80,6 +80,12 @@
                     </li>
                     <li>
                       <div class="dropdown-divider"></div>
+                    </li>
+                    <li hx-get="/change-profile-picture/" hx-target="#body-wrapper" hx-swap="innerHTML">
+                      <a class="dropdown-item" href="#" >
+                        <i class="fas fa-exchange-alt me-2"></i>
+                        <span class="align-middle">Change Profile Picture</span>
+                      </a>
                     </li>
                     <li>
                       <a class="dropdown-item" href="{% url 'logout' %}" >

@@ -13,6 +13,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from .serializers import UserSerializer, ToDoListSerializer, MessageSerializer, ConversationSerializer, UserProfileSerializer
 import random
+from django.core.mail import send_mail
+from django.conf import settings
+from django.template.loader import render_to_string
 # Create your views here.
 
 
@@ -253,6 +256,20 @@ def signup_view(request):
             user = User.objects.create_user(
                 first_name=firstname, last_name=lastname, email=email, username=email, password=password1)
             user.save()
+            name = user.first_name
+            template = render_to_string(
+                'main/email.html', {'name': name})
+            try:
+                send_mail(
+                    'Account created successfully',
+                    template,
+                    settings.EMAIL_HOST_USER,
+                    [email],
+                    fail_silently=False,
+                    html_message=template,
+                )
+            except Exception as e:
+                print(e)
             messages.success(request, 'Account created successfully')
             return render(request, 'main/auth-login-cover.html')
     return render(request, 'main/auth-register-cover.html')
@@ -437,4 +454,17 @@ def change_theme(request, theme):
 
 
 def error_view(request, exception=None):
+    print(exception)
     return render(request, 'main/404.html')
+
+
+def change_profile_picture(request):
+    print(request.user)
+    if request.method == 'POST':
+        profile_picture = request.FILES.get('profile_picture')
+        userProfile, _ = UserProfile.objects.get_or_create(user=request.user)
+        userProfile.profile_pic = profile_picture
+        userProfile.save()
+        return redirect('home')
+    print(request.user)
+    return render(request, 'main/change-profile-picture.html')

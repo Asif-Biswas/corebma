@@ -1,0 +1,12 @@
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="card p-5" style="min-height: 80vh">
+        <div>
+            <h4>Change Profile Picture</h4>
+            <form action="{% url "change_profile_picture" %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="profile_picture" id="file" class="inputfile" />
+                <button type="submit" class="btn btn-primary active">Upload</button>
+            </form>
+        </div>
+    </div>
+</div>

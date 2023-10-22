@@ -54,4 +54,5 @@ urlpatterns = [
     path('my-chat/', views.chat, name='chat'),
     path('chat/', views.chat_with_admin, name='chat_with_admin'),
     path('change-theme/<str:theme>/', views.change_theme, name='change_theme'),
+    path('change-profile-picture/', views.change_profile_picture, name='change_profile_picture'),
 ]
