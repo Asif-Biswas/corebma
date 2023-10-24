@@ -74,3 +74,16 @@ class UserProfile(models.Model):
         conversation = Conversation.objects.get_or_create(
             user_one=self.user, user_two=superuser)[0]
         return conversation
+
+
+class Text(models.Model):
+    login_page_welcome_text = models.CharField(max_length=100, blank=True, null=True)
+    login_page_text = models.CharField(max_length=100, blank=True, null=True)
+    create_an_account_text = models.CharField(max_length=100, blank=True, null=True)
+    signup_page_text = models.CharField(max_length=100, blank=True, null=True)
+    signup_page_welcome_text = models.CharField(max_length=100, blank=True, null=True)
+    signin_instead_text = models.CharField(max_length=100, blank=True, null=True)
+    chat_with_admin = models.CharField(max_length=100, blank=True, null=True)
+    logo = models.ImageField(upload_to='media/logo', blank=True)
+
+    

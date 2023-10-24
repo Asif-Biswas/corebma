@@ -72,12 +72,20 @@
             <!-- Logo -->
             <div class="app-brand mb-4">
               <a href="/" class="app-brand-link gap-2">
-                <img src="{% static 'images/8.png' %}" alt="Brand Logo" class="app-brand-logo demo" style="width: 40px; height: 40px;">
+                <img 
+                  {% if text.logo %}
+                  src="{{text.logo.url}}" 
+                  {% else %}
+                  src="{% static 'images/logo_icon.png' %}" 
+                  {% endif %}
+                  alt="Brand Logo" class="app-brand-logo demo" style="width: 40px; height: 40px;">
               </a>
             </div>
             <!-- /Logo -->
-            <h3 class="mb-1">Welcome to Core! 👋</h3>
-            <p class="mb-4">Please sign-in to your account and start the adventure</p>
+            <h3 class="mb-1">{{text.login_page_welcome_text}}</h3>
+            <p class="mb-4">
+              {{text.login_page_text}}
+            </p>
 
             {% if messages %}
               {% for message in messages %}
@@ -121,15 +129,18 @@
             </form>
 
             <p class="text-center">
-              <span>New on our platform?</span>
-              <a href="{% url 'signup' %}">
-                <span>Create an account</span>
+              <a style="color: white" href="{% url 'signup' %}">
+                <span>
+                  {{text.create_an_account_text}}
+                </span>
               </a>
             </p>
             
             <p class="text-center">
               <a href="{% url 'chat_with_admin' %}">
-                <span>Chat with Admin</span>
+                <span>
+                  {{text.chat_with_admin}}
+                </span>
               </a>
             </p>
             
